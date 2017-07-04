@@ -3,6 +3,7 @@ package com.example.demo;
 import com.example.demo.domain.User;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,8 +20,8 @@ import static io.restassured.RestAssured.given;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Slf4j
 public class ApiUserControllerTest {
-    private static final org.slf4j.Logger log = LoggerFactory.getLogger(ApiUserControllerTest.class);
 
     @Value("${local.server.port}")
     private int serverPort;
@@ -43,6 +44,50 @@ public class ApiUserControllerTest {
                 .then()
                     .statusCode(HttpStatus.CREATED.value())
                     .extract().asString();
-        log.debug(body);
+        log.debug("body : {}", body);
     }
+
+    @Test
+    public void loginNoId() throws Exception {
+        User user = new User("noId", "", "aa");
+        String body =
+                given()
+                .contentType(ContentType.JSON)
+                .body(user)
+                .when()
+                .post("/api/login")
+                .then()
+                .statusCode(HttpStatus.UNAUTHORIZED.value())
+                .extract().asString();
+        log.debug("body: {}", body);
+    }
+
+    @Test
+    public void diffrentPassword() throws Exception {
+        User user = new User("userId2", "", "aa");
+        String body =
+                given()
+                .contentType(ContentType.JSON)
+                .body(user)
+                .when()
+                .post("/api/login")
+                .then()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .extract().asString();
+        log.debug("body: {}", body);
+    }
+
+    @Test
+    public void loginSuccess() throws Exception {
+        User user = new User("userId2", "", "PASSWORD");
+        given()
+                .contentType(ContentType.JSON)
+                .body(user)
+                .when()
+                .post("/api/login")
+                .then()
+                .statusCode(HttpStatus.OK.value());
+    }
+
+
 }
