@@ -49,7 +49,7 @@ public class ApiUserControllerTest {
 
     @Test
     public void loginNoId() throws Exception {
-        User user = new User("noId", "", "aa");
+        User user = new User("noId", "aa");
         String body =
                 given()
                 .contentType(ContentType.JSON)
@@ -64,7 +64,7 @@ public class ApiUserControllerTest {
 
     @Test
     public void diffrentPassword() throws Exception {
-        User user = new User("userId2", "", "aa");
+        User user = new User("userId2", "aa");
         String body =
                 given()
                 .contentType(ContentType.JSON)
@@ -79,7 +79,7 @@ public class ApiUserControllerTest {
 
     @Test
     public void loginSuccess() throws Exception {
-        User user = new User("userId2", "", "PASSWORD");
+        User user = new User("userId2", "PASSWORD");
         given()
                 .contentType(ContentType.JSON)
                 .body(user)
@@ -88,6 +88,4 @@ public class ApiUserControllerTest {
                 .then()
                 .statusCode(HttpStatus.OK.value());
     }
-
-
 }

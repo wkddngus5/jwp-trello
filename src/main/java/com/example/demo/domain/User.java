@@ -25,13 +25,18 @@ public class User {
     @Column(length = 15, nullable = false, unique = true)
     private String userId;
 
-    @NonNull
     @Column(length = 20, nullable = false)
     private String email;
 
     @NonNull
     @Column(length = 50, nullable = false)
     private String password;
+
+    public User(String userId, String email, String password) {
+        this.userId = userId;
+        this.email = email;
+        this.password = password;
+    }
 
     public boolean samePassword(User user) {
         return this.password.equals(user.password);
