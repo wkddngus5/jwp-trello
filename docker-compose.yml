@@ -8,6 +8,8 @@ services:
       - jwp-trello:jwp_trello
     ports:
       - "80:80"
+    volumes:
+      - ./app:/app
   jwp-trello:
     image: jwp-trello
     links:
