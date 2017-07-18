@@ -21,3 +21,7 @@ services:
       MYSQL_USER: dev
       MYSQL_PASSWORD: roalclsrn
       MYSQL_DATABASE: jwp-trello
+    volumes:
+      - trello-datavolume:/var/lib/mysql
+volumes:
+  trello-datavolume:
