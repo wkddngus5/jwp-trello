@@ -1,0 +1,23 @@
+version: '3'
+services:
+  nginx:
+    depends_on:
+      - jwp-trello
+    image: jwp/nginx
+    links:
+      - jwp-trello:jwp_trello
+    ports:
+      - "80:80"
+  jwp-trello:
+    image: jwp-trello
+    links:
+      - db
+  db:
+    image: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: roalclsrn
+      MYSQL_USER: dev
+      MYSQL_PASSWORD: roalclsrn
+      MYSQL_DATABASE: jwp-trello
