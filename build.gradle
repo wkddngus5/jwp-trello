@@ -43,7 +43,7 @@ dependencies {
 
 task buildDocker(type: Docker, dependsOn: build) {
 	push = false
-	applicationName = jar.baseName
+	applicationName = "wkddngus5/" + jar.baseName
 	dockerfile = file('src/main/docker/Dockerfile')
 	doFirst {
 		copy {
