@@ -2,10 +2,10 @@ version: '3'
 services:
   nginx:
     depends_on:
-      - wkddngus5/jwp-trello
+      - jwp-trello
     image: jwp/nginx
     links:
-      - wkddngus5/jwp-trello:jwp_trello
+      - jwp-trello:jwp_trello
     ports:
       - "80:80"
   jwp-trello:
