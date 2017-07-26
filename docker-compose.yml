@@ -9,7 +9,7 @@ services:
     ports:
       - "80:80"
   jwp-trello:
-    image: jwp-trello
+    image: wkddngus5/jwp-trello
     links:
       - db
     environment:
