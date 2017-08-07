@@ -29,10 +29,18 @@ class SignUp {
 
     console.log("USER: ", jsonData);
 
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+
+    console.log(token, header);
+
     $.ajax({
       type: "post",
       url: "/api/users",
       data: jsonData,
+      beforeSend: (xhr) => {
+        xhr.setRequestHeader(header, token);
+      },
       contentType: "application/json",
       success: this.onSuccess,
       error: this.onError

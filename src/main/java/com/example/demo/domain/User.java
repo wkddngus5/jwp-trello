@@ -1,11 +1,13 @@
 package com.example.demo.domain;
 
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.annotation.Resource;
+import javax.persistence.*;
+import java.util.Set;
 
 /**
  * Created by Naver on 2017. 6. 29..
@@ -29,8 +31,14 @@ public class User {
     private String email;
 
     @NonNull
-    @Column(length = 50, nullable = false)
+    @Column(length = 100, nullable = false)
+    @NotEmpty(message = "*Please provide your password")
+    @Length(min = 5, message = "*Your password must have at leaset 5 chracters")
     private String password;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "userRole", joinColumns =  @JoinColumn(name = "userId"), inverseJoinColumns = @JoinColumn(name = "roleId"))
+    private Set<Role> roles;
 
     public User(String userId, String email, String password) {
         this.userId = userId;
@@ -40,5 +48,9 @@ public class User {
 
     public boolean samePassword(User user) {
         return this.password.equals(user.password);
+    }
+
+    public String serializePassword(BCryptPasswordEncoder passwordEncoder) {
+        return password = passwordEncoder.encode(password);
     }
 }

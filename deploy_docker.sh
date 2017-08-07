@@ -12,5 +12,3 @@ echo "========= start building ========="
 
 cd nginx_docker
 docker build -t jwp/nginx .
-docker run --name jwp-nginx -d -p 80:80 --link jwp-trello:jwp_trello jwp/nginx
-echo "========= nginx is running ========="

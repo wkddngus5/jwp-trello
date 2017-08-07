@@ -15,7 +15,7 @@ public class PasswordEncoderTest {
     public void test1() {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-        String password = "abcdefg";
+        String password = "b";
 
         String result = passwordEncoder.encode(password);
         String result2 = passwordEncoder.encode(password);
