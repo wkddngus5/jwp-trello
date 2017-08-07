@@ -1,14 +1,12 @@
-echo "=======docker build============"
-docker stop jwp-trello
-docker rm jwp-trello
-docker rmi jwp-trello
-
-docker stop jwp-nginx
-docker rm jwp-nginx
-docker rmi jwp/nginx
-
-echo "========= start building ========="
+echo "========= start application building ========="
 ./gradlew clean build buildDocker
 
+echo "======= start nginx build ============"
 cd nginx_docker
 docker build -t jwp/nginx .
+
+echo "======= stop docker ps ============"
+docker-compose stop all
+
+echo "======= start docker ps ============"
+docker-compose up --build -d
