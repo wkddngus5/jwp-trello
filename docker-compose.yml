@@ -8,6 +8,9 @@ services:
       - jwp-trello:jwp_trello
     ports:
       - "80:80"
+    volumes:
+      - mafia:/etc/letsencrypt
+      - mafia-data:/data/letsencrypt
   jwp-trello:
     image: wkddngus5/jwp-trello
     links:
