@@ -8,6 +8,7 @@ services:
       - jwp-trello:jwp_trello
     ports:
       - "80:80"
+      - "443:443"
     volumes:
       - mafia:/etc/letsencrypt
       - mafia-data:/data/letsencrypt
@@ -30,3 +31,5 @@ services:
       - trello-datavolume:/var/lib/mysql
 volumes:
   trello-datavolume:
+  mafia:
+  mafia-data:
