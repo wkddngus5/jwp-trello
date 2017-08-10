@@ -18,7 +18,7 @@ class Login {
       }
     });
 
-    document.querySelector(".login-btn").addEventListener("click", e => {
+    document.querySelector(".waves-button-input").addEventListener("click", e => {
       this.postLogin(e);
     })
   }
@@ -31,12 +31,19 @@ class Login {
       "password": document.querySelector("#password").value
     });
 
+    let token = $("meta[name='_csrf']").attr("content");
+    let header = $("meta[name='_csrf_header']").attr("content");
+
     console.log("USER: ", jsonData);
+    console.log(token, header);
 
     $.ajax({
       type: "post",
       url: "/api/login",
       data: jsonData,
+      beforeSend: (xhr) => {
+        xhr.setRequestHeader(header, token);
+      },
       contentType: "application/json",
       success: this.onSuccess,
       error: this.onError
@@ -44,7 +51,7 @@ class Login {
   }
 
   onSuccess(status) {
-    window.location.href = "/";
+    window.location.href = "/board";
   }
 
   onError(status) {

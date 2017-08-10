@@ -1,29 +1,30 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <link type="text/css" rel="stylesheet" href="../static/lib/materialize.min.css" media="screen,projection"/>
-  <link type="text/css" rel="stylesheet" href="../static/css/board.css"/>
+  <meta name="_csrf" content="{{_csrf.token}}"/>
+  <meta name="_csrf_header" content="{{_csrf.headerName}}"/>
+  <link type="text/css" rel="stylesheet" href="/lib/materialize.min.css" media="screen,projection"/>
+  <link type="text/css" rel="stylesheet" href="/css/board.css"/>
 </head>
 
 <body>
 
   <header>
     <div class="header-wrapper">
-      <a href="#" class="brand-logo">JWP Trello</a>
+      <a href="/" class="brand-logo">JWP Trello</a>
       <ul>
-        <li><a href="#">logout</a></li>
+        <li><a href="/logout">logout</a></li>
       </ul>
     </div>
   </header>
 
   <div class="board-header-area">
       <p class="board-name">Default Board</p>
-
       <div class="member-list z-depth-1">
           <ul class="members">
             <li class="member">
-                <img src="../static/image/profile.png" />
-                <span class="member-name">Javajigi</span>
+                <img src="/image/profile.png" />
+                <a href="/boards"><span class="member-name">Javajigi</span></a>
             </li>
           </ul>
 
@@ -37,28 +38,38 @@
   </div>
 
   <div id="board-canvas" class="deck-sortable">
-    <div class="deck-wrapper">
-      <div class="deck-content z-depth-1">
+    {{#decks}}
+      <div class="deck-wrapper">
+        <div class="deck-content z-depth-1">
 
-        <div class="deck-header">
-          <textarea class="deck-header-name" value="First Todo">First Todo</textarea>
-        </div>
-
-        <div class="deck-cards">
-        </div>
-
-        <div class="card-composer">
-          <div class="add-card-form">
-            <textarea class="card-title"></textarea>
-            <div class=btn-area>
-              <button class="btn waves-effect waves-light save-card">save</button>
-              <button class="btn waves-effect waves-light cancel-card">cancel</button>
-            </div>
+          <div class="deck-header">
+            <textarea class="deck-header-name" value="First Todo">{{title}}</textarea>
           </div>
-          <a class="add-card-btn" href="#">Add a Card...</a>
+          <div class="deck-cards">
+            {{#cards}}
+            <div class="deck-card">
+              <div class="deck-card-detail">
+                <a class="deck-card-title modal-trigger modalLink" dir="auto" href="#">
+                  {{contents}}
+                </a>
+              </div>
+            </div>
+            {{/cards}}
+          </div>
+
+          <div class="card-composer">
+            <div class="add-card-form">
+              <textarea class="card-title"></textarea>
+              <div class=btn-area>
+                <button class="btn waves-effect waves-light save-card">save</button>
+                <button class="btn waves-effect waves-light cancel-card">cancel</button>
+              </div>
+            </div>
+            <a class="add-card-btn" href="#">Add a Card...</a>
+          </div>
         </div>
       </div>
-    </div>
+    {{/decks}}
 
     <div class="add-deck-area">
       <button class="btn waves-effect waves-light add-deck-btn">Add a Deck</button>
@@ -169,10 +180,10 @@
 
   <!----------------------------------------------------------------->
 
-  <script type="text/javascript" src="../static/lib/jquery-2.2.0.min.js"></script>
-  <script type="text/javascript" src="../static/lib/materialize.min.js"></script>
-  <script type="text/javascript" src="../static/lib/handlebars-v4.0.5.js"></script>
-  <script type="text/javascript" src="../static/js/template.js"></script>
-  <script type="text/javascript" src="../static/js/board.js"></script>
+  <script type="text/javascript" src="/lib/jquery-2.2.0.min.js"></script>
+  <script type="text/javascript" src="/lib/materialize.min.js"></script>
+  <script type="text/javascript" src="/lib/handlebars-v4.0.5.js"></script>
+  <script type="text/javascript" src="/js/template.js"></script>
+  <script type="text/javascript" src="/js/board.js"></script>
 </body>
 </html>
