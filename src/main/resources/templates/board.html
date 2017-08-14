@@ -39,7 +39,7 @@
 
   <div id="board-canvas" class="deck-sortable">
     {{#decks}}
-      <div class="deck-wrapper">
+      <div class="deck-wrapper" data-item="{{id}}">
         <div class="deck-content z-depth-1">
 
           <div class="deck-header">
@@ -47,7 +47,7 @@
           </div>
           <div class="deck-cards">
             {{#cards}}
-            <div class="deck-card">
+            <div class="deck-card" data-item="{{id}}">
               <div class="deck-card-detail">
                 <a class="deck-card-title modal-trigger modalLink" dir="auto" href="#">
                   {{contents}}

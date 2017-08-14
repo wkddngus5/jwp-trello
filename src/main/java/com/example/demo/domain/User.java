@@ -27,12 +27,12 @@ public class User {
     @Column(length = 15, nullable = false, unique = true)
     private String userId;
 
-    @Column(length = 20, nullable = false)
+    @Column(length = 20)
     private String email;
 
     @NonNull
-    @Column(length = 100, nullable = false)
-    @NotEmpty(message = "*Please provide your password")
+    @Column(length = 100)
+//    @NotEmpty(message = "*Please provide your password")
     @Length(min = 5, message = "*Your password must have at leaset 5 chracters")
     private String password;
 

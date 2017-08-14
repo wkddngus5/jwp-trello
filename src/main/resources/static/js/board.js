@@ -6,6 +6,9 @@ var BOARD = (function (window) {
     cardTemplate = Handlebars.compile(Template.card),
     commentTemplate = Handlebars.compile(Template.comment);
 
+  let header = $("meta[name='_csrf_header']").attr("content");
+  let token = $("meta[name='_csrf']").attr("content");
+
   function init() {
 
     $("#modal").modal();
@@ -113,9 +116,6 @@ var BOARD = (function (window) {
       "title": deckTitle,
     });
 
-    let header = $("meta[name='_csrf_header']").attr("content");
-    let token = $("meta[name='_csrf']").attr("content");
-
     console.log(jsonData, token, header);
     $.ajax({
       type: "post",
@@ -130,7 +130,7 @@ var BOARD = (function (window) {
           window.location.href = "/login";
         } else {
           $(".add-deck-form").css('display', 'none');
-          var deck = deckTemplate({"value": deckTitle})
+          var deck = deckTemplate({"id":res.id, "value": deckTitle});
           $(".add-deck-area").before(deck);
           $("#add-deck").val("");
           $(".add-deck-btn").css('display', 'block');
@@ -148,12 +148,32 @@ var BOARD = (function (window) {
 
   function openCardModal(e) {
 
+    let cardId = e.target.closest(".deck-card").getAttribute("data-item");
+    console.log("cardId: ", cardId);
+
     $("#modal").modal('open');
     var title = $(e.target).text();
     $(".card-title-in-modal").text(title);
+    $(".card-title-in-modal").attr("data-item", cardId);
     var deckName = $(e.target).closest(".deck-content").find(".deck-header-name").val();
     $(".deck-name").text(deckName);
 
+    $.ajax({
+      type: "get",
+      url: "/api/comments/" + cardId,
+      beforeSend: (xhr) => {
+        xhr.setRequestHeader(header, token);
+      },
+      contentType: "application/json",
+      success: (res) => {
+        console.log("res comments: ", res);
+        $(".comments").empty();
+
+        res.forEach(comment => {
+          $(commentTemplate({"comment-contents": comment.contents, "current-time": Date.now()})).appendTo(".comments");
+        });
+      }
+    });
   }
 
   function setAttachment() {
@@ -201,26 +221,38 @@ var BOARD = (function (window) {
 
       $("#warning-modal").modal('open');
       return;
-
     }
 
-    // $.ajax({
-    //
-    // }).done(function(){
+    let cardId = $(".card-title-in-modal").attr("data-item");
 
-    var now = new Date();
-    var currentTime = now.getDate() + " " +
-      monthToString(now.getMonth() + 1) + " " +
-      now.getFullYear() + " at " +
-      now.getHours() + ":" +
-      now.getMinutes();
-    $(commentTemplate({"comment-contents": commentContent, "current-time": currentTime})).appendTo(".comments");
-    $(".comment-contents").val("");
+    let jsonData = JSON.stringify({
+      "cardId": cardId,
+      "contents": commentContent
+    });
 
-    // }).fail(function(){
-    //
-    // });
-
+    $.ajax({
+      type: "post",
+      url: "/api/comments",
+      data: jsonData,
+      beforeSend: (xhr) => {
+        xhr.setRequestHeader(header, token);
+      },
+      contentType: "application/json",
+      success: (res) => {
+        if(res.length === 0) {
+          window.location.href = "/login";
+        } else {
+          var now = new Date();
+          var currentTime = now.getDate() + " " +
+            monthToString(now.getMonth() + 1) + " " +
+            now.getFullYear() + " at " +
+            now.getHours() + ":" +
+            now.getMinutes();
+          $(commentTemplate({"comment-contents": commentContent, "current-time": currentTime})).appendTo(".comments");
+          $(".comment-contents").val("");
+        }
+      }
+    });
   }
 
   function monthToString(month) {
@@ -270,7 +302,6 @@ var BOARD = (function (window) {
       $(".card-description-textarea").val(descriptionContent);
       $(".card-description").css("display", "none");
     }
-
   }
 
   function closeCardEdit() {
@@ -293,22 +324,35 @@ var BOARD = (function (window) {
 
     }
 
-    // $.ajax({
-    //
-    // }).done(function(){
+    let cardId = $(".card-title-in-modal").attr("data-item");
 
-    $(".card-description-textarea").val("");
-    $(".card-description").text(description);
-    $(".card-description-edit").css("display", "none");
-    $(".card-description-edit-btn").css("display", "block");
-    $(".card-description").css("display", "block");
+    let jsonData = JSON.stringify({
+      "id": cardId,
+      "contents": description
+    });
 
+    console.log("card: ", jsonData);
 
-    // }).fail(function(){
-    //
-    // });
-
-
+    $.ajax({
+      type: "put",
+      url: "/api/cards",
+      data: jsonData,
+      beforeSend: (xhr) => {
+        xhr.setRequestHeader(header, token);
+      },
+      contentType: "application/json",
+      success: (res) => {
+        if(res.length === 0) {
+          window.location.href = "/login";
+        } else {
+          $(".card-description-textarea").val("");
+          $(".card-description").text(description);
+          $(".card-description-edit").css("display", "none");
+          $(".card-description-edit-btn").css("display", "block");
+          $(".card-description").css("display", "block");
+        }
+      }
+    });
   }
 
   function setDueDate() {

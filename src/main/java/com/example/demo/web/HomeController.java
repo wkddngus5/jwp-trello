@@ -26,11 +26,16 @@ public class HomeController {
     private DeckRepository deckRepository;
 
     @GetMapping("/")
-    public String home() {
+    public String home(HttpSession httpSession) {
+//        User sessionedUser = (User)httpSession.getAttribute("user");
+//        log.debug("session user: {}", httpSession);
+//        if(sessionedUser != null) {
+//            return "redirect:board";
+//        }
         return "index";
     }
 
-    @GetMapping("/login")
+    @GetMapping("/loginForm")
     public String login() {
         return "login";
     }

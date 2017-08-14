@@ -6,7 +6,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * Created by Naver on 2017. 6. 29..
@@ -15,36 +16,39 @@ import java.util.Set;
 @NoArgsConstructor
 @ToString
 @Entity
-public class Card {
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="cardId")
+    @Column(name="commentId")
     @Getter
     @Setter
     private Long id;
 
     @Getter
     @Setter
-    @Column(name="deckId")
-    private Long deckId;
+    @Column(name="cardId")
+    private Long cardId;
 
     @Column(name="contents", nullable = false)
     @Getter
     @Setter
     private String contents;
 
-    @OneToMany
-    @JoinColumn(name = "cardId")
+    @Column(name="createTime")
     @Getter
     @Setter
-    private Set<Comment> comments;
+    private LocalDateTime createTime;
 
-    public Card(String contents) {
+    public Comment(Long id, Long cardId, String contents) {
+        this.id = id;
+        this.cardId = cardId;
         this.contents = contents;
+        this.createTime = LocalDateTime.now();
     }
 
-    public Card(Long id, String contents) {
-        this.id = id;
+    public Comment(Long cardId, String contents) {
+        this.cardId = cardId;
         this.contents = contents;
+        this.createTime = LocalDateTime.now();
     }
 }

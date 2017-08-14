@@ -4,7 +4,7 @@ var Template = {
                     "{{input-value}}" +
           "</li>",
 
-  deck : "<div class='deck-wrapper'>" +
+  deck : "<div class='deck-wrapper' id='{{id}}'>" +
                 "<div class='deck-content z-depth-1'>" +
                     "<div class='deck-header'>" +
                       "<textarea class='deck-header-name'>{{value}}</textarea>" +

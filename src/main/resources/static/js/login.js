@@ -18,7 +18,8 @@ class Login {
       }
     });
 
-    document.querySelector(".waves-button-input").addEventListener("click", e => {
+    document.querySelector(".login-btn").addEventListener("click", e => {
+      e.preventDefault();
       this.postLogin(e);
     })
   }

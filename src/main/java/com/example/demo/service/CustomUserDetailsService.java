@@ -34,6 +34,9 @@ public class CustomUserDetailsService implements UserDetailsService {
         log.debug("load username : {}", username);
         com.example.demo.domain.User user = userRepository.findByUserId(username);
         log.debug("loaded User : {}", user);
+        if(user == null) {
+            throw new UsernameNotFoundException("no user");
+        }
         List<GrantedAuthority> authorities = buildUserAuthority(user.getRoles());
         return buildUserForAuthentication(user, authorities);
     }

@@ -14,3 +14,6 @@ INSERT INTO deck (deck_id, user_id, title) VALUES (1, 1, 'TEST DECK');
 
 INSERT INTO card (card_id, deck_id, contents) VALUES (1, 1, 'TEST CARD');
 INSERT INTO card (card_id, deck_id, contents) VALUES (2, 1, 'TEST CARD2');
+
+INSERT INTO comment (comment_id, card_id, contents) VALUES (1, 1, 'TEST COMMENT');
+INSERT INTO comment (comment_id, card_id, contents) VALUES (2, 1, 'TEST COMMENT2');

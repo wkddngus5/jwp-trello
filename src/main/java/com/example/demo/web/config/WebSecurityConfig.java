@@ -3,6 +3,7 @@ package com.example.demo.web.config;
 import com.example.demo.service.CustomUserDetailsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -53,6 +54,7 @@ public abstract class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Configuration
     @EnableWebSecurity
+    @EnableOAuth2Sso
     @Profile({"local", "dev", "prod"})
     @Slf4j
     static class NotTestWebSecurityConfig extends WebSecurityConfig {
