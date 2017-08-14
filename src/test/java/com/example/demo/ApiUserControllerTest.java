@@ -67,7 +67,7 @@ public class ApiUserControllerTest {
 
     @Test
     public void diffrentPassword() throws Exception {
-        User user = new User("userId2", "aa");
+        User user = new User("a", "diffrentPassword");
         String body =
                 given()
                 .contentType(ContentType.JSON)
@@ -82,7 +82,7 @@ public class ApiUserControllerTest {
 
     @Test
     public void loginSuccess() throws Exception {
-        User user = new User("userId2", "PASSWORD");
+        User user = new User("a", "a");
         given()
                 .contentType(ContentType.JSON)
                 .body(user)
