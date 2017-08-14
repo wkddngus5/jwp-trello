@@ -9,4 +9,4 @@ echo "======= stop docker ps ============"
 docker-compose stop all
 
 echo "======= start docker ps ============"
-docker-compose up --build -d
+docker-compose up -d

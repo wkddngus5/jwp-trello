@@ -27,12 +27,12 @@ public class User {
     @Column(length = 15, nullable = false, unique = true)
     private String userId;
 
-    @Column(length = 20, nullable = false)
+    @Column(length = 20)
     private String email;
 
     @NonNull
-    @Column(length = 100, nullable = false)
-    @NotEmpty(message = "*Please provide your password")
+    @Column(length = 100)
+//    @NotEmpty(message = "*Please provide your password")
     @Length(min = 5, message = "*Your password must have at leaset 5 chracters")
     private String password;
 
@@ -40,17 +40,21 @@ public class User {
     @JoinTable(name = "userRole", joinColumns =  @JoinColumn(name = "userId"), inverseJoinColumns = @JoinColumn(name = "roleId"))
     private Set<Role> roles;
 
+    @OneToMany
+    @JoinColumn(name = "userId")
+    private Set<Deck> decks;
+
     public User(String userId, String email, String password) {
         this.userId = userId;
         this.email = email;
         this.password = password;
     }
 
-    public boolean samePassword(User user) {
-        return this.password.equals(user.password);
+    public boolean samePassword(User user, BCryptPasswordEncoder passwordEncoder) {
+        return this.password.equals(user.password) || passwordEncoder.matches(user.password, this.password);
     }
 
-    public String serializePassword(BCryptPasswordEncoder passwordEncoder) {
-        return password = passwordEncoder.encode(password);
+    public void serializePassword(BCryptPasswordEncoder passwordEncoder) {
+        this.password = passwordEncoder.encode(password);
     }
 }

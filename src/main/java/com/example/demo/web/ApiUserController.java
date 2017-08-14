@@ -48,7 +48,7 @@ public class ApiUserController {
             return new ResponseEntity<String>("There is no account for this id", HttpStatus.UNAUTHORIZED);
         }
 
-        if(!findUser.samePassword(user)) {
+        if(!bCryptPasswordEncoder.matches( user.getPassword(), findUser.getPassword())) {
             return new ResponseEntity<String>("Password does not match the confirm password", HttpStatus.BAD_REQUEST);
         }
         httpSession.setAttribute("user", findUser);
