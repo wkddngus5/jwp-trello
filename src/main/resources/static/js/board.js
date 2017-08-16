@@ -80,12 +80,32 @@ var BOARD = (function (window) {
       return;
     }
 
-    $(".add-card-form").css('display', 'none');
-    var card = cardTemplate({"value": cardTitle});
-    var $deckWrapper = $(e.target).closest(".deck-wrapper");
-    $deckWrapper.find(".deck-cards").append(card);
-    $(e.target).parents(".add-card-form").find(".card-title").val("");
-    $(e.target).parents(".card-composer").find("a.add-card-btn").css('display', 'block');
+    let jsonData = JSON.stringify({
+      "deckId": e.target.closest('.deck-wrapper').getAttribute('data-item'),
+      "contents": cardTitle
+    });
+
+    $.ajax({
+      type: "post",
+      url: "/api/cards",
+      data: jsonData,
+      beforeSend: (xhr) => {
+        xhr.setRequestHeader(header, token);
+      },
+      contentType: "application/json",
+      success: (res) => {
+        if(res.length === 0) {
+          window.location.href = "/login";
+        } else {
+          $(".add-card-form").css('display', 'none');
+          var card = cardTemplate({"value": cardTitle});
+          var $deckWrapper = $(e.target).closest(".deck-wrapper");
+          $deckWrapper.find(".deck-cards").append(card);
+          $(e.target).parents(".add-card-form").find(".card-title").val("");
+          $(e.target).parents(".card-composer").find("a.add-card-btn").css('display', 'block');
+        }
+      }
+    });
   }
 
   function cancelCard(e) {
@@ -170,14 +190,17 @@ var BOARD = (function (window) {
         $(".comments").empty();
 
         res.forEach(comment => {
-          $(commentTemplate({"comment-contents": comment.contents, "current-time": Date.now()})).appendTo(".comments");
+          $(commentTemplate({
+            "writer-name": comment.writerName,
+            "comment-contents": comment.contents,
+            "current-time": comment.createTime
+          })).appendTo(".comments");
         });
       }
     });
   }
 
   function setAttachment() {
-
     if ($(".modal-for-attachment").hasClass("clicked")) {
       $(".modal-for-attachment").removeClass("clicked").slideUp();
       return;
@@ -189,7 +212,6 @@ var BOARD = (function (window) {
   }
 
   function setDate() {
-
     if ($(".modal-for-due-date").hasClass("clicked")) {
       $(".modal-for-due-date").removeClass("clicked").slideUp();
       return;
@@ -202,7 +224,6 @@ var BOARD = (function (window) {
   }
 
   function searchMember() {
-
     if ($(".modal-for-members").hasClass("clicked")) {
       $(".modal-for-members").removeClass("clicked").slideUp();
       return;
@@ -214,7 +235,6 @@ var BOARD = (function (window) {
   }
 
   function addComment(e) {
-
     var commentContent = $(".comment-contents").val();
 
     if (commentContent == "") {
@@ -224,10 +244,17 @@ var BOARD = (function (window) {
     }
 
     let cardId = $(".card-title-in-modal").attr("data-item");
+    var now = new Date();
+    var currentTime = now.getDate() + " " +
+      monthToString(now.getMonth() + 1) + " " +
+      now.getFullYear() + " at " +
+      now.getHours() + ":" +
+      now.getMinutes();
 
     let jsonData = JSON.stringify({
       "cardId": cardId,
-      "contents": commentContent
+      "contents": commentContent,
+      "createTime": currentTime
     });
 
     $.ajax({
@@ -242,12 +269,6 @@ var BOARD = (function (window) {
         if(res.length === 0) {
           window.location.href = "/login";
         } else {
-          var now = new Date();
-          var currentTime = now.getDate() + " " +
-            monthToString(now.getMonth() + 1) + " " +
-            now.getFullYear() + " at " +
-            now.getHours() + ":" +
-            now.getMinutes();
           $(commentTemplate({"comment-contents": commentContent, "current-time": currentTime})).appendTo(".comments");
           $(".comment-contents").val("");
         }

@@ -24,9 +24,16 @@ public class ApiCardController {
     private CardRepository cardRepository;
 
 
-    @PutMapping("/api/cards")
+    @PostMapping("/api/cards")
     @ResponseStatus(HttpStatus.CREATED)
     public Card create(HttpSession httpSession, @RequestBody Card card) {
+        log.debug("input card: {}", card);
+        return cardRepository.save(card);
+    }
+
+    @PutMapping("/api/cards")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Card edit(HttpSession httpSession, @RequestBody Card card) {
         log.debug("input card: {}", card);
         Card findedCard = cardRepository.findByid(card.getId());
         log.debug("CARD: {}", card);

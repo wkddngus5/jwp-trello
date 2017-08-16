@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 /**
@@ -37,7 +38,11 @@ public class ApiCommentController {
     @PostMapping("/api/comments")
     @ResponseStatus(HttpStatus.CREATED)
     public Comment create(HttpSession httpSession, @RequestBody Comment comment) {
-        commentRepository.save(comment);
-        return comment;
+        User sessionedUser = (User)httpSession.getAttribute("user");
+        if(sessionedUser == null) {
+            return null;
+        }
+        comment.setWriterName(sessionedUser.getUserId());
+        return commentRepository.save(comment);
     }
 }

@@ -27,6 +27,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(HttpSession httpSession) {
+        log.debug("session: {}", httpSession);
 //        User sessionedUser = (User)httpSession.getAttribute("user");
 //        log.debug("session user: {}", httpSession);
 //        if(sessionedUser != null) {

@@ -37,18 +37,21 @@ public class Comment {
     @Column(name="createTime")
     @Getter
     @Setter
-    private LocalDateTime createTime;
+    private String createTime;
+
+    @Column(name="writerName")
+    @Getter
+    @Setter
+    private String writerName;
 
     public Comment(Long id, Long cardId, String contents) {
         this.id = id;
         this.cardId = cardId;
         this.contents = contents;
-        this.createTime = LocalDateTime.now();
     }
 
     public Comment(Long cardId, String contents) {
         this.cardId = cardId;
         this.contents = contents;
-        this.createTime = LocalDateTime.now();
     }
 }

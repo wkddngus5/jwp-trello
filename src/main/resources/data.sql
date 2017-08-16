@@ -15,5 +15,5 @@ INSERT INTO deck (deck_id, user_id, title) VALUES (1, 1, 'TEST DECK');
 INSERT INTO card (card_id, deck_id, contents) VALUES (1, 1, 'TEST CARD');
 INSERT INTO card (card_id, deck_id, contents) VALUES (2, 1, 'TEST CARD2');
 
-INSERT INTO comment (comment_id, card_id, contents) VALUES (1, 1, 'TEST COMMENT');
-INSERT INTO comment (comment_id, card_id, contents) VALUES (2, 1, 'TEST COMMENT2');
+INSERT INTO comment (comment_id, card_id, contents, writer_name, create_time) VALUES (1, 1, 'TEST COMMENT', 'a', '16 Aug 2017 at 23:59');
+INSERT INTO comment (comment_id, card_id, contents, writer_name, create_time) VALUES (2, 1, 'TEST COMMENT2', 'a', '16 Aug 2017 at 23:59');
