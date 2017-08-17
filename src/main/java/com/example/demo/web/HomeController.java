@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.security.Principal;
 
 /**
  * Created by Naver on 2017. 6. 29..
@@ -26,13 +27,11 @@ public class HomeController {
     private DeckRepository deckRepository;
 
     @GetMapping("/")
-    public String home(HttpSession httpSession) {
-        log.debug("session: {}", httpSession);
-//        User sessionedUser = (User)httpSession.getAttribute("user");
-//        log.debug("session user: {}", httpSession);
-//        if(sessionedUser != null) {
-//            return "redirect:board";
-//        }
+    public String home(Principal principal) {
+        if (principal != null) {
+            log.debug("user session: {}", principal.getName());
+            return "redirect:board";
+        }
         return "index";
     }
 
@@ -61,8 +60,8 @@ public class HomeController {
 
     @GetMapping("/boards")
     public String boards(Model model, HttpSession httpSession) {
-        User sessionedUser = (User)httpSession.getAttribute("user");
-        if(sessionedUser == null) {
+        User sessionedUser = (User) httpSession.getAttribute("user");
+        if (sessionedUser == null) {
             return "login";
         }
         model.addAttribute("decks", userRepository.findByUserId(sessionedUser.getUserId()).getDecks());

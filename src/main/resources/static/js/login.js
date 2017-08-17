@@ -18,10 +18,10 @@ class Login {
       }
     });
 
-    document.querySelector(".login-btn").addEventListener("click", e => {
-      e.preventDefault();
-      this.postLogin(e);
-    })
+    // document.querySelector(".login-btn").addEventListener("click", e => {
+    //   e.preventDefault();
+    //   this.postLogin(e);
+    // });
   }
 
   postLogin(e) {

@@ -1,5 +1,7 @@
 package com.example.demo.web;
 
+import com.example.demo.domain.Role;
+import com.example.demo.domain.RoleRepository;
 import com.example.demo.domain.User;
 import com.example.demo.domain.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -23,14 +25,18 @@ public class ApiUserController {
     @Resource(name = "userRepository")
     private UserRepository userRepository;
 
+    @Resource(name = "roleRepository")
+    private RoleRepository roleRepository;
+
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @PostMapping("/api/users")
     @ResponseStatus(HttpStatus.CREATED)
     public User create(@RequestBody User user) {
-        log.debug("USER: {}", user);
         user.serializePassword(bCryptPasswordEncoder);
+        Role defaultRole = roleRepository.findByRole("USER");
+        user.addRole(defaultRole);
         return userRepository.save(user);
     }
 

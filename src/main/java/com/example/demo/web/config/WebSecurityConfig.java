@@ -31,6 +31,7 @@ public abstract class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .and()
                 .formLogin()
                     .loginPage("/login")
+                    .loginProcessingUrl("/api/login")
                     .permitAll()
                     .and()
                 .logout()
