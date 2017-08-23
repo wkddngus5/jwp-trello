@@ -7,6 +7,6 @@ import java.util.Set;
 /**
  * Created by Naver on 2017. 7. 4..
  */
-public interface DeckRepository extends CrudRepository<Deck, Long> {
-    Deck findByid(Long id);
+public interface BoardRepository extends CrudRepository<Board, Long> {
+    Board findByid(Long id);
 }

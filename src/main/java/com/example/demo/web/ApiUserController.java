@@ -49,7 +49,7 @@ public class ApiUserController {
     @PostMapping("/api/login")
     public ResponseEntity<String> login(@RequestBody User user, HttpSession httpSession) {
         log.debug("inputInfo: {}", user);
-        User findUser = userRepository.findByUserId(user.getUserId());
+        User findUser = userRepository.findById(user.getId());
         if(findUser == null) {
             return new ResponseEntity<String>("There is no account for this id", HttpStatus.UNAUTHORIZED);
         }

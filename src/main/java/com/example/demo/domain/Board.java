@@ -15,31 +15,31 @@ import java.util.Set;
 @NoArgsConstructor
 @ToString
 @Entity
-public class Deck {
+public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="deckId")
+    @Column(name="boardId")
     @Getter
     @Setter
     private Long id;
 
-    @Getter
-    @Setter
-    @Column(name="boardId")
-    private Long boardId;
-
-    @Column(name="title", nullable = false)
+    @Column(name="title", nullable = false, unique = true)
     @Getter
     @Setter
     private String title;
 
     @OneToMany
-    @JoinColumn(name = "deckId")
+    @JoinColumn(name = "boardId")
     @Getter
     @Setter
-    private Set<Card> cards;
+    private Set<Deck> decks;
 
-    public Deck(String title) {
-        this.title = title;
+    public static Board searchSameBoard(Set<Board> boards, Board objectBoard) {
+        for(Board board : boards) {
+            if(board.getTitle().equals(objectBoard.getTitle())) {
+                return board;
+            }
+        }
+        return null;
     }
 }

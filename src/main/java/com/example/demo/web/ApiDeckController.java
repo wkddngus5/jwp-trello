@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.security.Principal;
 
 /**
  * Created by Naver on 2017. 6. 29..
@@ -31,12 +32,11 @@ public class ApiDeckController {
 
     @PostMapping("/api/decks")
     @ResponseStatus(HttpStatus.CREATED)
-    public Deck create(HttpSession httpSession, @RequestBody Deck deck) {
-        User sessionedUser = (User)httpSession.getAttribute("user");
-        if(sessionedUser == null) {
+    public Deck create(Principal principal, @RequestBody Deck deck) {
+        if (principal == null) {
             return null;
         }
-        deck.setUserId(sessionedUser.getId());
+        principal.getName();
         deckRepository.save(deck);
         return deck;
     }

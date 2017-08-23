@@ -32,7 +32,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
         log.debug("load username : {}", username);
-        com.example.demo.domain.User user = userRepository.findByUserId(username);
+        com.example.demo.domain.User user = userRepository.findByEmail(username);
         log.debug("loaded User : {}", user);
         if(user == null) {
             throw new UsernameNotFoundException("no user");
@@ -43,7 +43,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     private User buildUserForAuthentication(com.example.demo.domain.User user, List<GrantedAuthority> authorities) {
-        return new User(user.getUserId(), user.getPassword(),
+        return new User(user.getEmail(), user.getPassword(),
                 true, true, true, true, authorities);
     }
 

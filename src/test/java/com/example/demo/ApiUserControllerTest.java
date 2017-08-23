@@ -36,7 +36,7 @@ public class ApiUserControllerTest {
 
     @Test
     public void create() throws Exception {
-        User user = new User("userId", "password", "email@email.com");
+        User user = new User("email@email.com", "password");
 
         String body =
                 given()

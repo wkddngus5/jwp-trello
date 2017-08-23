@@ -16,7 +16,6 @@ import java.util.Set;
 
 @Data
 @NoArgsConstructor
-@RequiredArgsConstructor
 @ToString
 @Entity
 public class User {
@@ -25,10 +24,7 @@ public class User {
     private Long id;
 
     @NonNull
-    @Column(length = 15, nullable = false, unique = true)
-    private String userId;
-
-    @Column(length = 20)
+    @Column(length = 20, nullable = false, unique = true)
     private String email;
 
     @NonNull
@@ -45,8 +41,11 @@ public class User {
     @JoinColumn(name = "userId")
     private Set<Deck> decks;
 
-    public User(String userId, String email, String password) {
-        this.userId = userId;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "userBoard", joinColumns = @JoinColumn(name = "userId"), inverseJoinColumns = @JoinColumn(name = "boardId"))
+    public Set<Board> boards = new HashSet<>();
+
+    public User(String email, String password) {
         this.email = email;
         this.password = password;
     }
@@ -61,5 +60,9 @@ public class User {
 
     public void addRole(Role role) {
         this.roles.add(role);
+    }
+
+    public void addBoard(Board board){
+        boards.add(board);
     }
 }

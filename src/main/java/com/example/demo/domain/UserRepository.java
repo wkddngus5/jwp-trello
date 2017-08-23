@@ -6,5 +6,6 @@ import org.springframework.data.repository.CrudRepository;
  * Created by Naver on 2017. 7. 4..
  */
 public interface UserRepository extends CrudRepository<User, Long> {
-    User findByUserId(String userId);
+    User findById(Long id);
+    User findByEmail(String email);
 }

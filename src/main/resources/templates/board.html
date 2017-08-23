@@ -13,63 +13,73 @@
     <div class="header-wrapper">
       <a href="/" class="brand-logo">JWP Trello</a>
       <ul>
-        <li><a href="/logout">logout</a></li>
+          <li>
+            <form method="post" action="/logout">
+              <input type="hidden"
+                     name="{{_csrf.parameterName}}"
+                     value="{{_csrf.token}}"/>
+              <button type="submit" id="logout">logout</button>
+            </form>
+          </li>
       </ul>
     </div>
   </header>
 
-  <div class="board-header-area">
-      <p class="board-name">Default Board</p>
-      <div class="member-list z-depth-1">
-          <ul class="members">
-            <li class="member">
-                <img src="/image/profile.png" />
-                <a href="/boards"><span class="member-name">Javajigi</span></a>
-            </li>
-          </ul>
+  {{#board}}
+    <div class="board-header-area">
+        <p class="board-name" id="{{id}}">{{title}}</p>
 
-          <div class="add-member-form">
-              <input class="email-for-invitation" type="text" placeholder="e.g. taco@trello.com"/>
-              <div class="add-member-btn btn waves-effect waves-light" type="submit">submit</div>
-          </div>
-      </div>
+        <div class="member-list z-depth-1">
+            <ul class="members">
+              <li class="member">
+                  <img src="/image/profile.png" />
+                  <a href="/boards"><span class="member-name">Javajigi</span></a>
+              </li>
+            </ul>
 
-      <div class="members-btn waves-effect waves-light btn">members</div>
-  </div>
-
-  <div id="board-canvas" class="deck-sortable">
-    {{#decks}}
-      <div class="deck-wrapper" data-item="{{id}}">
-        <div class="deck-content z-depth-1">
-
-          <div class="deck-header">
-            <textarea class="deck-header-name" value="First Todo">{{title}}</textarea>
-          </div>
-          <div class="deck-cards">
-            {{#cards}}
-            <div class="deck-card" data-item="{{id}}">
-              <div class="deck-card-detail">
-                <a class="deck-card-title modal-trigger modalLink" dir="auto" href="#">
-                  {{contents}}
-                </a>
-              </div>
+            <div class="add-member-form">
+                <input class="email-for-invitation" type="text" placeholder="e.g. taco@trello.com"/>
+                <div class="add-member-btn btn waves-effect waves-light" type="submit">submit</div>
             </div>
-            {{/cards}}
-          </div>
+        </div>
 
-          <div class="card-composer">
-            <div class="add-card-form">
-              <textarea class="card-title"></textarea>
-              <div class=btn-area>
-                <button class="btn waves-effect waves-light save-card">save</button>
-                <button class="btn waves-effect waves-light cancel-card">cancel</button>
-              </div>
+        <div class="members-btn waves-effect waves-light btn">members</div>
+    </div>
+
+    <div id="board-canvas" class="deck-sortable">
+      {{#decks}}
+        <div class="deck-wrapper" data-item="{{id}}">
+          <div class="deck-content z-depth-1">
+
+            <div class="deck-header">
+              <textarea class="deck-header-name" value="First Todo">{{title}}</textarea>
             </div>
-            <a class="add-card-btn" href="#">Add a Card...</a>
+            <div class="deck-cards">
+              {{#cards}}
+              <div class="deck-card" data-item="{{id}}">
+                <div class="deck-card-detail">
+                  <a class="deck-card-title modal-trigger modalLink" dir="auto" href="#">
+                    {{contents}}
+                  </a>
+                </div>
+              </div>
+              {{/cards}}
+            </div>
+
+            <div class="card-composer">
+              <div class="add-card-form">
+                <textarea class="card-title"></textarea>
+                <div class=btn-area>
+                  <button class="btn waves-effect waves-light save-card">save</button>
+                  <button class="btn waves-effect waves-light cancel-card">cancel</button>
+                </div>
+              </div>
+              <a class="add-card-btn" href="#">Add a Card...</a>
+            </div>
           </div>
         </div>
-      </div>
-    {{/decks}}
+      {{/decks}}
+    {{/board}}
 
     <div class="add-deck-area">
       <button class="btn waves-effect waves-light add-deck-btn">Add a Deck</button>
@@ -125,7 +135,6 @@
     </div>
 
     <div class="modal-sidebar">
-
       <p>Add</p>
       <div class="modal-sidebar-btn z-depth-1 members-btn-in-card">Members</div>
 
@@ -163,7 +172,6 @@
         <input type="text" class="link-for-attachment" placeholder="Paste any link here..." />
         <div class="link-submit z-depth-1">Attach</div>
       </div>
-
     </div>
   </div>
 

@@ -6,8 +6,8 @@ var BOARD = (function (window) {
     cardTemplate = Handlebars.compile(Template.card),
     commentTemplate = Handlebars.compile(Template.comment);
 
-  let header = $("meta[name='_csrf_header']").attr("content");
-  let token = $("meta[name='_csrf']").attr("content");
+  const header = $("meta[name='_csrf_header']").attr("content");
+  const token = $("meta[name='_csrf']").attr("content");
 
   function init() {
 
@@ -35,7 +35,6 @@ var BOARD = (function (window) {
     $(".card-edit-close").on("click", closeCardEdit);
     $(".card-edit-save").on("click", saveCardEdit);
     $(".datepicker").on("change", setDueDate);
-
   }
 
   function closeModal(e) {
@@ -62,7 +61,6 @@ var BOARD = (function (window) {
     }
 
     $(".member-list").addClass("clicked").slideDown();
-
   }
 
   function showCreateCardForm(e) {
@@ -98,7 +96,7 @@ var BOARD = (function (window) {
           window.location.href = "/login";
         } else {
           $(".add-card-form").css('display', 'none');
-          var card = cardTemplate({"value": cardTitle});
+          var card = cardTemplate({"id": res.id, "value": cardTitle});
           var $deckWrapper = $(e.target).closest(".deck-wrapper");
           $deckWrapper.find(".deck-cards").append(card);
           $(e.target).parents(".add-card-form").find(".card-title").val("");
@@ -134,9 +132,9 @@ var BOARD = (function (window) {
 
     let jsonData = JSON.stringify({
       "title": deckTitle,
+      "boardId": document.querySelector('.board-name').id
     });
 
-    console.log(jsonData, token, header);
     $.ajax({
       type: "post",
       url: "/api/decks",
@@ -267,7 +265,7 @@ var BOARD = (function (window) {
       contentType: "application/json",
       success: (res) => {
         if(res.length === 0) {
-          window.location.href = "/login";
+          window.location.href = "/loginForm";
         } else {
           $(commentTemplate({"comment-contents": commentContent, "current-time": currentTime})).appendTo(".comments");
           $(".comment-contents").val("");

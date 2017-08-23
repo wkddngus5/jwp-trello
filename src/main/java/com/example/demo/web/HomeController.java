@@ -1,13 +1,12 @@
 package com.example.demo.web;
 
-import com.example.demo.domain.DeckRepository;
-import com.example.demo.domain.User;
-import com.example.demo.domain.UserRepository;
+import com.example.demo.domain.*;
 import jdk.nashorn.internal.objects.annotations.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -23,14 +22,14 @@ public class HomeController {
     @Resource(name = "userRepository")
     private UserRepository userRepository;
 
-    @Resource(name = "deckRepository")
-    private DeckRepository deckRepository;
+    @Resource(name = "boardRepository")
+    private BoardRepository boardRepository;
 
     @GetMapping("/")
     public String home(Principal principal) {
         if (principal != null) {
             log.debug("user session: {}", principal.getName());
-            return "redirect:board";
+            return "redirect:boards";
         }
         return "index";
     }
@@ -40,31 +39,30 @@ public class HomeController {
         return "login";
     }
 
-    @GetMapping("/logout")
-    public String logout(HttpSession httpSession) {
-        httpSession.removeAttribute("user");
-        return "login";
-    }
-
     @GetMapping("/signUp")
     public String signUp() {
         return "signUp";
     }
 
-    @GetMapping("/board")
-    public String board(Model model) {
-        log.debug("DECKS: {}", deckRepository.findAll());
-        model.addAttribute("decks", deckRepository.findAll());
+    @GetMapping("/board/{id}")
+    public String board(@PathVariable(value = "id") long id, Model model, Principal principal) {
+        if (principal != null) {
+            log.debug("user session: {}", principal.getName());
+        }
+        Board board = boardRepository.findByid(id);
+        log.debug("board: {}", board);
+        model.addAttribute("board", boardRepository.findByid(id));
         return "board";
     }
 
     @GetMapping("/boards")
-    public String boards(Model model, HttpSession httpSession) {
-        User sessionedUser = (User) httpSession.getAttribute("user");
-        if (sessionedUser == null) {
-            return "login";
+    public String boards(Model model, Principal principal) {
+        if (principal == null) {
+            return "redirect:loginForm";
         }
-        model.addAttribute("decks", userRepository.findByUserId(sessionedUser.getUserId()).getDecks());
+        log.debug("boards: {}", userRepository.findByEmail(principal.getName()).getBoards());
+        model.addAttribute("boards",
+                userRepository.findByEmail(principal.getName()).getBoards());
         return "boards";
     }
 }

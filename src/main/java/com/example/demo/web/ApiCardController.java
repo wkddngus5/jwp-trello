@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.security.Principal;
 import java.util.Set;
 
 /**
@@ -26,19 +27,24 @@ public class ApiCardController {
 
     @PostMapping("/api/cards")
     @ResponseStatus(HttpStatus.CREATED)
-    public Card create(HttpSession httpSession, @RequestBody Card card) {
+    public Card create(Principal principal, @RequestBody Card card) {
+        if (principal == null) {
+            return null;
+        }
         log.debug("input card: {}", card);
         return cardRepository.save(card);
     }
 
     @PutMapping("/api/cards")
     @ResponseStatus(HttpStatus.CREATED)
-    public Card edit(HttpSession httpSession, @RequestBody Card card) {
+    public Card edit(Principal principal, @RequestBody Card card) {
+        if (principal == null) {
+            return null;
+        }
         log.debug("input card: {}", card);
         Card findedCard = cardRepository.findByid(card.getId());
         log.debug("CARD: {}", card);
         findedCard.setContents(card.getContents());
-        cardRepository.save(findedCard);
-        return findedCard;
+        return cardRepository.save(findedCard);
     }
 }

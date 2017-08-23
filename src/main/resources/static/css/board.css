@@ -1199,3 +1199,11 @@ body #warning-modal {
   text-align: center;
 
 }
+
+#logout {
+  color: white;
+  background-color: #00acc1;
+  border: none;
+  outline: 0;
+  height: 100%;
+}

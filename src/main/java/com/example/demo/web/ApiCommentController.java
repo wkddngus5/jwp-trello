@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -29,7 +30,10 @@ public class ApiCommentController {
 
     @GetMapping("/api/comments/{cardId}")
     @ResponseStatus(HttpStatus.OK)
-    public Set<Comment> create(HttpSession httpSession, @PathVariable Long cardId) {
+    public Set<Comment> create(Principal principal, @PathVariable Long cardId) {
+        if (principal == null) {
+            return null;
+        }
         Set<Comment> comments = commentRepository.findByCardId(cardId);
         log.debug("finded comments: {}", comments);
         return comments;
@@ -37,12 +41,11 @@ public class ApiCommentController {
 
     @PostMapping("/api/comments")
     @ResponseStatus(HttpStatus.CREATED)
-    public Comment create(HttpSession httpSession, @RequestBody Comment comment) {
-        User sessionedUser = (User)httpSession.getAttribute("user");
-        if(sessionedUser == null) {
+    public Comment create(Principal principal, @RequestBody Comment comment) {
+        if (principal == null) {
             return null;
         }
-        comment.setWriterName(sessionedUser.getUserId());
+        comment.setWriterName(principal.getName());
         return commentRepository.save(comment);
     }
 }

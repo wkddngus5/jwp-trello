@@ -1,6 +1,6 @@
 var Template = {
 
-  board : "<li class='board waves-effect waves-light btn'>" +
+  board : "<li class='board waves-effect waves-light btn' data-item='{{id}}'>" +
                     "{{input-value}}" +
           "</li>",
 
@@ -22,7 +22,7 @@ var Template = {
                     "</div>" +
                 "</div>" +
               "</div>",
-  card : "<div class='deck-card'>" +
+  card : "<div class='deck-card' data-item='{{id}}'>" +
   						"<div class='deck-card-detail'>" +
                   "<a class='deck-card-title modal-trigger modalLink' dir='auto' href='#'>{{value}}</a>" +
               "</div>" +
@@ -34,5 +34,4 @@ var Template = {
                 "<div class='comment-date'>{{current-time}} - </div>" +
                 "<div class='comment-reply'> Reply</div>" +
     			  "</div>"
-
 };
