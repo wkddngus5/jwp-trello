@@ -14,7 +14,7 @@ INSERT INTO board (board_id, title) VALUES (1, 'TEST BOARD');
 
 INSERT INTO user_board (user_id, board_id) VALUES (1, 1);
 
-INSERT INTO deck (deck_id, user_id, title) VALUES (1, 1, 'TEST DECK');
+INSERT INTO deck (deck_id, board_id, title) VALUES (1, 1, 'TEST DECK');
 
 INSERT INTO card (card_id, deck_id, contents) VALUES (1, 1, 'TEST CARD');
 INSERT INTO card (card_id, deck_id, contents) VALUES (2, 1, 'TEST CARD2');
