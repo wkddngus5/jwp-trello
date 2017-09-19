@@ -3,7 +3,7 @@ docker-compose down
 git pull
 
 echo "========= start application building ========="
-./gradlew clean build buildDocker --stacktrace
+./gradlew clean build buildDocker --stacktrace -x test
 
 echo "======= start nginx build ============"
 cd nginx_docker
