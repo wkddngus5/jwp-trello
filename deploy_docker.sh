@@ -1,3 +1,7 @@
+docker-compose down
+
+git pull
+
 echo "========= start application building ========="
 ./gradlew clean build buildDocker --stacktrace
 
