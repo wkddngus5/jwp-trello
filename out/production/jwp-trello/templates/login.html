@@ -1,0 +1,55 @@
+<html>
+    <head>
+      <meta charset="utf-8">
+      <title>JWP Trello Login</title>
+        <meta name="_csrf" content="{{_csrf.token}}"/>
+        <meta name="_csrf_header" content="{{_csrf.headerName}}"/>
+        <link type="text/css" rel="stylesheet" href="lib/materialize.min.css" media="screen,projection"/>
+        <link type="text/css" rel="stylesheet" href="/css/login.css">
+    </head>
+
+    <body>
+        <header>
+            <div class="header-wrapper">
+                <a href="/" class="brand-logo">JWP Trello</a>
+                <ul>
+                  <li><a href="/signUp">sign up</a></li>
+                </ul>
+            </div>
+        </header>
+
+        <div class="login-box z-depth-2">
+
+            <h4>Login To Trello</h4>
+
+            <form class="login-form" method="POST" action="/login_local">
+                <input type="hidden"
+                       name="{{_csrf.parameterName}}"
+                       value="{{_csrf.token}}"/>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="id" name="username" type="text" class="validate">
+                        <label for="id">EMAIL</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="password" name="password" type="password" class="validate">
+                        <label for="password">Password</label>
+                    </div>
+                </div>
+                <input class="login-btn waves-effect waves-light btn" type="submit" value="로그인" />
+            </form>
+
+            <p class="alternatives-separator">or</p>
+
+            <a class="github-login waves-effect waves-light btn" href="/login">
+                <div class="github-icon"></div>
+                <div class="github-login-text">github로 로그인</div>
+            </a>
+        </div>
+        <script type="text/javascript" src="/lib/jquery-2.2.0.min.js"></script>
+        <script type="text/javascript" src="/lib/materialize.min.js"></script>
+        <script type="text/javascript" src="/js/login.js"></script>
+    </body>
+  </html>

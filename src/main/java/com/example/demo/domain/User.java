@@ -37,10 +37,6 @@ public class User {
     @JoinTable(name = "userRole", joinColumns =  @JoinColumn(name = "userId"), inverseJoinColumns = @JoinColumn(name = "roleId"))
     private Set<Role> roles = new HashSet<>();
 
-    @OneToMany
-    @JoinColumn(name = "userId")
-    private Set<Deck> decks;
-
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "userBoard", joinColumns = @JoinColumn(name = "userId"), inverseJoinColumns = @JoinColumn(name = "boardId"))
     public Set<Board> boards = new HashSet<>();
@@ -64,5 +60,14 @@ public class User {
 
     public void addBoard(Board board){
         boards.add(board);
+    }
+
+    public boolean hasBoard(Board board) {
+        for(Board myBoard : this.boards) {
+            if(myBoard.equals(board)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

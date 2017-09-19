@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.logging.Logger;
@@ -16,6 +17,7 @@ import static io.restassured.RestAssured.given;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
 public class HomeControllerTest {
     private static final org.slf4j.Logger log = LoggerFactory.getLogger(HomeControllerTest.class);
 
@@ -31,8 +33,9 @@ public class HomeControllerTest {
     @Test
     public void home() throws Exception {
         String body = given()
+                .auth().preemptive().basic("woohyeon@hanmail.com", "a")
                 .when()
-                    .get("/")
+                    .get("/boards")
                 .then()
                     .statusCode(HttpStatus.OK.value())
                     .extract()

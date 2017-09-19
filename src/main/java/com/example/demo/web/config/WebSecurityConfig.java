@@ -13,6 +13,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.header.writers.StaticHeadersWriter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 public abstract class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -27,6 +29,7 @@ public abstract class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                     .antMatchers(HttpMethod.GET,"/api/users").hasRole("ADMIN")
+                    .antMatchers("/boards/**").hasRole("USER")
                     .anyRequest().permitAll()
                     .and()
                 .formLogin()
@@ -35,9 +38,7 @@ public abstract class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .permitAll()
                     .and()
                 .logout()
-                    .logoutUrl("/logout")
-                    .logoutSuccessUrl("/")
-                    .permitAll();
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
     }
 
     @Bean
@@ -62,6 +63,9 @@ public abstract class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         @Override
         void configureCsrf(HttpSecurity http) throws Exception {
             log.info("enable csrf test profile");
+            http.csrf().requireCsrfProtectionMatcher(new AntPathRequestMatcher("!/h2-console/**"))
+                    .and().headers().addHeaderWriter(new StaticHeadersWriter("X-Content-Security-Policy","script-src 'self'"))
+                    .frameOptions().disable();
 //            http.csrf().disable();
         }
     }
@@ -75,6 +79,8 @@ public abstract class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         void configureCsrf(HttpSecurity http) throws Exception {
             log.info("disable csrf test profile");
             http.csrf().disable();
+
+            http.httpBasic();
         }
     }
 }

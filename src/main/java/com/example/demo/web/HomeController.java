@@ -44,11 +44,8 @@ public class HomeController {
         return "signUp";
     }
 
-    @GetMapping("/board/{id}")
+    @GetMapping("/boards/{id}")
     public String board(@PathVariable(value = "id") long id, Model model, Principal principal) {
-        if (principal != null) {
-            log.debug("user session: {}", principal.getName());
-        }
         Board board = boardRepository.findByid(id);
         log.debug("board: {}", board);
         model.addAttribute("board", boardRepository.findByid(id));
@@ -57,9 +54,6 @@ public class HomeController {
 
     @GetMapping("/boards")
     public String boards(Model model, Principal principal) {
-        if (principal == null) {
-            return "redirect:loginForm";
-        }
         log.debug("boards: {}", userRepository.findByEmail(principal.getName()).getBoards());
         model.addAttribute("boards",
                 userRepository.findByEmail(principal.getName()).getBoards());
