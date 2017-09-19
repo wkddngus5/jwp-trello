@@ -2,17 +2,25 @@ version: '3'
 services:
   nginx:
     depends_on:
-      - jwp-trello
+      - jwp-trello1
+      - jwp-trello2
     image: jwp/nginx
     links:
-      - jwp-trello:jwp_trello
+      - jwp-trello1:jwp_trello1
+      - jwp-trello2:jwp_trello2
     ports:
       - "80:80"
       - "443:443"
     volumes:
       - mafia:/etc/letsencrypt
       - mafia-data:/data/letsencrypt
-  jwp-trello:
+  jwp-trello1:
+    image: wkddngus5/jwp-trello
+    links:
+      - db
+    environment:
+      - "SPRING_PROFILES_ACTIVE=dev"
+  jwp-trello2:
     image: wkddngus5/jwp-trello
     links:
       - db
@@ -33,3 +41,4 @@ volumes:
   trello-datavolume:
   mafia:
   mafia-data:
+
