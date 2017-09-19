@@ -52,7 +52,7 @@ class Login {
   }
 
   onSuccess(status) {
-    window.location.href = "/board";
+    window.location.href = "/boards";
   }
 
   onError(status) {
