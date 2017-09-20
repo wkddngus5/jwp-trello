@@ -1,6 +1,6 @@
 -- password='a'
-INSERT INTO user (id, email, password) VALUES (1, 'woohyeon@hanmail.com', '$2a$10$yPX4FZBDG0QpchOZHHFUTOqLMQtZiPEj9K7KFGJtJTnByrFM.kY6G');
-INSERT INTO user (id, email, password) VALUES (2, 'a@EMAIL.COM', '$2a$10$GaJKDLoZSj6aO8xMHEp1FuFeAUgRB/CKS5WTslX2dah4K2rQJftJG');
+INSERT INTO user (email, password) VALUES ('woohyeon@hanmail.com', '$2a$10$yPX4FZBDG0QpchOZHHFUTOqLMQtZiPEj9K7KFGJtJTnByrFM.kY6G');
+INSERT INTO user (email, password) VALUES ('a@EMAIL.COM', '$2a$10$GaJKDLoZSj6aO8xMHEp1FuFeAUgRB/CKS5WTslX2dah4K2rQJftJG');
 
 INSERT INTO role (role_id, role) VALUES (1, 'ADMIN');
 INSERT INTO role (role_id, role) VALUES (2, 'USER');
